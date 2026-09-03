@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
+}
+
+
+/*BIENVENIDA*/
+
+.welcome {
+    height: 200vh;
+    background: #0f0f0f;
+}
+
+
+.welcome-content {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+
+    text-align: center;
+}
+
+
+   /*BIENVENIDO*/
+
+
+.welcome-text {
+    font-size: 18px;
+    letter-spacing: 6px;
+}
+
+
+/* NOMBRE*/
+
+#welcome-name {
+    margin-top: 20px;
+
+    font-size: 60px;
+
+    transform-origin: center;
+
+    will-change: transform, opacity;
+}
+
+
+/*  DESCRIPCIÓN */
+
+.welcome-description {
+    margin-top: 15px;
+
+    font-size: 18px;
+}
+
+
+/* LOADER*/
+
+.loader {
+    width: 40px;
+    height: 40px;
+
+    margin: 40px auto 0;
+
+    border: 3px solid #444;
+    border-top: 3px solid white;
+
+    border-radius: 50%;
+
+    animation: girar 1s linear infinite;
+}
+
+
+/*PORTAFOLIO*/
+
+#portfolio {
+    min-height: 100vh;
+
+    padding: 100px 10%;
+
+    background: #111;
+
+    text-align: center;
+}
+
+#portfolio h2 {
+    font-size: 40px;
+}
+
+
+/*ANIMACIÓN LOADER*/
+
+@keyframes girar {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
