@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuesta Dinámica</title>
+  <link rel="stylesheet" href="css/encuesta.css">
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <form id="encuestaForm" novalidate>
+      <h2>Encuesta de Preferencias</h2>
+      <p class="subtitle">Cuéntanos un poco sobre tu perfil académico y tecnológico.</p>
+
+      <!-- Nivel Académico -->
+      <div class="form-group">
+        <label for="academicLevel">Nivel Académico</label>
+        <select id="academicLevel" required>
+          <option value="">Seleccione...</option>
+          <option value="Secundaria">Secundaria</option>
+          <option value="Técnico">Técnico</option>
+          <option value="Universitario">Universitario</option>
+          <option value="Posgrado">Posgrado</option>
+        </select>
+        <span class="error-message" id="academicLevelErr"></span>
+      </div>
+
+      <!-- Lenguaje Preferido -->
+      <div class="form-group">
+        <label for="langPref">Lenguaje de Programación Preferido</label>
+        <select id="langPref" required>
+          <option value="">Seleccione...</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Python">Python</option>
+          <option value="Java">Java</option>
+          <option value="C#">C#</option>
+        </select>
+        <span class="error-message" id="langPrefErr"></span>
+      </div>
+
+      <!-- Motivo (con opción condicional "Otro") -->
+      <div class="form-group">
+        <label for="reasonSelect">¿Por qué elegiste ese lenguaje?</label>
+        <select id="reasonSelect" required>
+          <option value="">Seleccione...</option>
+          <option value="Facilidad">Facilidad de aprendizaje</option>
+          <option value="Demanda">Demanda laboral</option>
+          <option value="Versatilidad">Versatilidad</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <span class="error-message" id="reasonErr"></span>
+      </div>
+
+      <!-- Campo condicional: solo se muestra si se elige "Otro" -->
+      <div class="form-group" id="otherGroup" style="display:none;">
+        <label for="otherReason">Especifica tu motivo</label>
+        <input type="text" id="otherReason" placeholder="Escribe tu motivo aquí...">
+        <span class="error-message" id="otherReasonErr"></span>
+      </div>
+
+      <button type="submit" class="btn-primary">Enviar Encuesta</button>
+    </form>
+
+    <!-- Vista generada tras el envío de la encuesta -->
+    <div id="surveySummary" class="summary-card" style="display:none;">
+      <h3>✅ Resumen de Respuestas Enviadas</h3>
+      <ul id="summaryList"></ul>
+      <button type="button" id="restartBtn" class="btn-secondary">Responder de nuevo</button>
+    </div>
+
+  </div>
+
+  <script src="js/encuesta.js"></script>
+</body>
+</html>
