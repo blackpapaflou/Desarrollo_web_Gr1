@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Registro</title>
+  <link rel="stylesheet" href="css/registro.css">
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <form id="regForm" class="form-grid" novalidate>
+      <h2 class="full-width">Crear Cuenta</h2>
+
+      <!-- Nombre completo: ocupa todo el ancho -->
+      <div class="full-width">
+        <label for="fullname">Nombre Completo</label>
+        <input type="text" id="fullname" required>
+        <span class="error-message" id="nameErr"></span>
+      </div>
+
+      <!-- Correo -->
+      <div>
+        <label for="regEmail">Correo Electrónico</label>
+        <input type="email" id="regEmail" required>
+        <span class="error-message" id="regEmailErr"></span>
+      </div>
+
+      <!-- Género -->
+      <div>
+        <label for="gender">Género</label>
+        <select id="gender">
+          <option value="">Seleccione...</option>
+          <option value="M">Masculino</option>
+          <option value="F">Femenino</option>
+        </select>
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+        <label for="regPass">Contraseña</label>
+        <input type="password" id="regPass" required minlength="6">
+        <span class="error-message" id="regPassErr"></span>
+      </div>
+
+      <!-- Confirmar contraseña -->
+      <div>
+        <label for="regPassConfirm">Confirmar Contraseña</label>
+        <input type="password" id="regPassConfirm" required minlength="6">
+        <span class="error-message" id="regPassConfirmErr"></span>
+      </div>
+
+      <!-- Términos y condiciones -->
+      <div class="full-width">
+        <label class="checkbox-label"><input type="checkbox" id="terms"> Acepto Términos y Condiciones</label>
+        <span class="error-message" id="termsErr"></span>
+      </div>
+
+      <button type="submit" class="full-width btn-success">Registrar Cuenta</button>
+    </form>
+
+    <div id="regSummary" class="summary-card" style="display:none;">
+      <h3>🎉 ¡Cuenta Creada Con Éxito!</h3>
+      <p id="summaryText"></p>
+    </div>
+
+  </div>
+
+  <script src="js/registro.js"></script>
+</body>
+</html>

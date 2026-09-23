@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Hoja de Vida</title>
+  <link rel="stylesheet" href="css/hoja-vida.css">
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <form id="cvForm" novalidate>
+      <h2>Generador de Hoja de Vida</h2>
+
+      <!-- 1. Información Personal -->
+      <fieldset>
+        <legend>1. Información Personal</legend>
+
+        <div class="form-group">
+          <label for="cvName">Nombre Completo</label>
+          <input type="text" id="cvName" required>
+          <span class="error-message" id="cvNameErr"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="cvTitle">Título Profesional</label>
+          <input type="text" id="cvTitle" required placeholder="Ej. Desarrollador Frontend">
+          <span class="error-message" id="cvTitleErr"></span>
+        </div>
+      </fieldset>
+
+      <!-- 2. Experiencia Laboral -->
+      <fieldset>
+        <legend>2. Experiencia Laboral</legend>
+
+        <div id="experienceContainer"></div>
+
+        <button type="button" id="addExpBtn" class="btn-secondary">+ Agregar Experiencia</button>
+        <span class="error-message" id="expErr"></span>
+      </fieldset>
+
+      <button type="submit" class="btn-primary">Generar Vista CV</button>
+    </form>
+
+    <!-- Vista previa del CV generado -->
+    <div id="cvPreview" class="cv-preview" style="display:none;">
+      <h3>📄 Vista Previa del CV</h3>
+      <div id="cvPreviewContent"></div>
+      <button type="button" id="editCvBtn" class="btn-secondary">Editar</button>
+    </div>
+
+  </div>
+
+  <script src="js/hoja-vida.js"></script>
+</body>
+</html>

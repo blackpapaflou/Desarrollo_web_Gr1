@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Login</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- Formulario con validación personalizada desactivando la nativa -->
+    <form id="loginForm" novalidate>
+      <h2>Iniciar Sesión</h2>
+
+      <!-- Campo de Correo Electrónico -->
+      <div class="form-group">
+        <label for="loginEmail">Correo Electrónico</label>
+        <input type="email" id="loginEmail" name="email" required placeholder="usuario@dominio.com">
+        <span class="error-message" id="emailError"></span>
+      </div>
+
+      <!-- Campo de Contraseña -->
+      <div class="form-group">
+        <label for="loginPass">Contraseña</label>
+        <div class="password-wrapper">
+          <input type="password" id="loginPass" name="password" required minlength="6">
+          <button type="button" id="togglePass" class="toggle-eye" aria-label="Mostrar contraseña">👁️</button>
+        </div>
+        <span class="error-message" id="passError"></span>
+      </div>
+
+      <button type="submit" class="btn-primary">Ingresar</button>
+    </form>
+
+    <!-- Vista dinámica de confirmación (Oculta por defecto) -->
+    <div id="loginWelcome" class="welcome-card" style="display:none;">
+      <h3>¡Bienvenido de nuevo, <span id="userEmailDisplay"></span>!</h3>
+      <p>Has iniciado sesión con éxito en la plataforma.</p>
+    </div>
+
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
