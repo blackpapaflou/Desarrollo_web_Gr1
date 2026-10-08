@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emanuel Rangel | Portafolio</title>
+
+    <!--
+        TEMA CLARO / OSCURO (parte 1: elegir el tema ANTES de dibujar la pagina)
+        Este mini script se ejecuta primero para que la pagina no parpadee:
+        - si la persona ya eligio un tema antes, usa ese;
+        - si no, usa el que tenga el sistema (igual que hacen los navegadores).
+        Guarda el resultado en <html data-tema="claro"> o <html data-tema="oscuro">.
+    -->
+    <script>
+        (function () {
+            var tema = null;
+            try { tema = localStorage.getItem("tema"); } catch (e) {}
+            if (tema !== "claro" && tema !== "oscuro") {
+                tema = window.matchMedia("(prefers-color-scheme: light)").matches ? "claro" : "oscuro";
+            }
+            document.documentElement.setAttribute("data-tema", tema);
+        })();
+    </script>
+
+    <!-- Una sola fuente de Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- BARRA DE PROGRESO: se llena mientras haces scroll (la mueve script.js) -->
+    <div class="progreso" id="progreso"></div>
+
+    <!-- FIGURAS DE FONDO: círculos y cuadros que flotan solos (solo CSS) -->
+    <div class="figuras" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="#welcome" class="navbar-logo">Emanuel Rangel</a>
+
+            <ul class="navbar-links">
+                <li><a href="#welcome">Inicio</a></li>
+                <li><a href="#sobre-mi">Sobre mí</a></li>
+                <li><a href="#habilidades">Habilidades</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#educacion">Educación</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+
+            <!--
+                INTERRUPTOR CLARO / OSCURO
+                Es un botón con forma de interruptor: un "pomo" que se desliza
+                de un lado al otro. Los dos dibujos (sol y luna) son SVG.
+            -->
+            <button class="tema-switch" id="tema-switch" type="button" role="switch"
+                    aria-checked="true" aria-label="Cambiar entre tema claro y oscuro">
+                <svg class="icono-sol" viewBox="0 0 24 24" width="14" height="14" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+                </svg>
+                <svg class="icono-luna" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+                </svg>
+                <span class="pomo"></span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="welcome" id="welcome">
+
+        <div class="welcome-content">
+
+            <p class="welcome-text">
+                BIENVENIDO
+            </p>
+
+            <h1 id="welcome-name">
+                Emanuel Rangel
+            </h1>
+
+            <p class="welcome-description">
+                Portafolio personal
+            </p>
+
+            <div class="loader"></div>
+
+        </div>
+
+    </section>
+
+
+    <main>
+
+        <!--
+            data-anim="..." le dice a script.js que anime ese elemento cuando aparece en pantalla.
+            --i es el "turno": un elemento con --i:2 entra después que uno con --i:0.
+        -->
+
+        <!-- SOBRE MÍ -->
+        <section class="section" id="sobre-mi">
+            <div class="section-inner about-grid">
+                <div class="about-photo" aria-hidden="true" data-anim="zoom">
+                    <span>ER</span>
+                </div>
+                <div class="about-text">
+                    <p class="section-label" data-anim="left">Sobre mí</p>
+                    <h2 data-anim="left" style="--i:1">Estudiante de informática, aprendiendo construyendo</h2>
+                    <p data-anim="left" style="--i:2">
+                        Escribe aquí un párrafo breve sobre quién eres, qué estás estudiando
+                        y qué tipo de proyectos te gusta construir. Dos o tres frases son
+                        suficientes: lo importante es que suene a ti.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HABILIDADES -->
+        <section class="section" id="habilidades">
+            <div class="section-inner">
+                <p class="section-label" data-anim="zoom">Habilidades</p>
+                <h2 data-anim="zoom" style="--i:1">Con qué trabajo</h2>
+                <ul class="skills-list">
+                    <li style="--i:0">Python</li>
+                    <li style="--i:1">HTML / CSS</li>
+                    <li style="--i:2">MySQL</li>
+                    <li style="--i:3">Django</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PROYECTOS -->
+        <section class="section" id="proyectos">
+            <div class="section-inner">
+                <p class="section-label" data-anim="up">Proyectos</p>
+                <h2 data-anim="up" style="--i:1">Algunas cosas que he construido</h2>
+
+                <div class="projects-grid">
+
+                    <article class="project-card" data-anim="up" style="--i:0">
+                        <span class="project-number">01</span>
+                        <h3>Nombre del proyecto</h3>
+                        <p>Breve descripción de qué hace el proyecto y qué problema resuelve.</p>
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>Django</span>
+                        </div>
+                        <a href="#" class="project-link">Ver proyecto</a>
+                    </article>
+
+                    <article class="project-card" data-anim="up" style="--i:1">
+                        <span class="project-number">02</span>
+                        <h3>Nombre del proyecto</h3>
+                        <p>Breve descripción de qué hace el proyecto y qué problema resuelve.</p>
+                        <div class="project-tags">
+                            <span>MySQL</span>
+                            <span>HTML/CSS</span>
+                        </div>
+                        <a href="#" class="project-link">Ver proyecto</a>
+                    </article>
+
+                    <article class="project-card" data-anim="up" style="--i:2">
+                        <span class="project-number">03</span>
+                        <h3>Nombre del proyecto</h3>
+                        <p>Breve descripción de qué hace el proyecto y qué problema resuelve.</p>
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>MySQL</span>
+                        </div>
+                        <a href="#" class="project-link">Ver proyecto</a>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EDUCACIÓN -->
+        <section class="section" id="educacion">
+            <div class="section-inner">
+                <p class="section-label" data-anim="right">Educación</p>
+                <h2 data-anim="right" style="--i:1">Formación</h2>
+
+                <ul class="timeline" data-anim="right" style="--i:2">
+                    <li>
+                        <span class="timeline-date">2023 — presente</span>
+                        <span class="timeline-title">Nombre de la institución</span>
+                        <span class="timeline-detail">Programa de informática</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section class="section" id="contacto">
+            <div class="section-inner">
+                <p class="section-label" data-anim="zoom">Contacto</p>
+                <h2 data-anim="zoom" style="--i:1">Hablemos</h2>
+                <p data-anim="zoom" style="--i:2">
+                    Si quieres escribirme sobre un proyecto, una oportunidad o simplemente
+                    saludar, aquí me encuentras.
+                </p>
+
+                <ul class="contact-list">
+                    <li data-anim="left" style="--i:3"><a href="mailto:tucorreo@ejemplo.com" class="pulso">tucorreo@ejemplo.com</a></li>
+                    <li data-anim="left" style="--i:4"><a href="#" target="_blank" rel="noopener">GitHub</a></li>
+                    <li data-anim="left" style="--i:5"><a href="#" target="_blank" rel="noopener">LinkedIn</a></li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Emanuel Rangel. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

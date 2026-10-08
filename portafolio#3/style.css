@@ -1,0 +1,1052 @@
+/* ==========================================================
+   PORTAFOLIO — Emanuel Rangel
+   Versión sencilla: cada animación se explica en pocas líneas.
+
+   Dos herramientas de animación en CSS:
+   1) transition  -> anima el CAMBIO entre dos estados (ej: al pasar el mouse)
+   2) @keyframes  -> anima una secuencia por pasos (ej: rebotar sin parar)
+   ========================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   TEMA CLARO / OSCURO (parte 2: los colores de cada tema)
+
+   Todos los colores viven en variables (--nombre). El script de
+   <head> pone data-tema="claro" u "oscuro" en <html>, y aqui cada
+   tema redefine las MISMAS variables con otros valores.
+   Como todo el CSS usa var(--nombre), toda la pagina cambia sola.
+
+   Paleta profesional: solo 3 colores de acento
+   azul, turquesa e indigo (mas oscuros en el tema claro para
+   que se lean bien sobre blanco).
+   ========================================================== */
+
+/* TEMA OSCURO (tambien es el de respaldo si algo falla) */
+:root,
+html[data-tema="oscuro"] {
+    --bg: #0b1020;
+    --bg-alt: #131a2e;
+    --text: #f1f5f9;
+    --text-muted: #9aa7bd;
+    --border: #25304a;
+    --nav-bg: rgba(11, 16, 32, 0.85);
+
+    --azul: #60a5fa;
+    --azul-rgb: 96, 165, 250;
+    --turquesa: #2dd4bf;
+    --turquesa-rgb: 45, 212, 191;
+    --indigo: #818cf8;
+    --indigo-rgb: 129, 140, 248;
+
+    --on-c: #0b1020;            /* color del texto SOBRE un fondo de acento */
+    --figuras-op: 0.18;
+    --loader-pista: #2a3550;
+}
+
+/* TEMA CLARO */
+html[data-tema="claro"] {
+    --bg: #f8fafc;
+    --bg-alt: #ffffff;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #e2e8f0;
+    --nav-bg: rgba(248, 250, 252, 0.88);
+
+    --azul: #2563eb;
+    --azul-rgb: 37, 99, 235;
+    --turquesa: #0f766e;
+    --turquesa-rgb: 15, 118, 110;
+    --indigo: #4f46e5;
+    --indigo-rgb: 79, 70, 229;
+
+    --on-c: #ffffff;
+    --figuras-op: 0.12;
+    --loader-pista: #cbd5e1;
+}
+
+:root {
+    --font: 'Poppins', Arial, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+
+    /* La curva con "rebote": hace que los elementos se pasen un poco y vuelvan.
+       Es la que da el movimiento exagerado. */
+    --rebote: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+
+    /* al cambiar de tema, el fondo y el texto se funden en medio segundo */
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+
+/* ==========================================================
+   BARRA DE PROGRESO (arriba de todo)
+   script.js calcula cuanto has bajado y la estira de 0 a 1.
+   El degradado azul-turquesa se mueve con @keyframes.
+   ========================================================== */
+
+.progreso {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    z-index: 150;
+
+    background: linear-gradient(90deg, var(--azul), var(--turquesa), var(--indigo), var(--azul));
+    background-size: 300% 100%;
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    animation: mover-colores 5s linear infinite;
+}
+
+@keyframes mover-colores {
+    to { background-position: 300% 0; }
+}
+
+
+/* ==========================================================
+   FIGURAS FLOTANTES DE FONDO
+   Seis formas con la MISMA animación; cada una cambia
+   de tamaño, posición, color y velocidad con variables.
+   ========================================================== */
+
+.figuras {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.figuras span {
+    position: absolute;
+    width: var(--t);
+    height: var(--t);
+    left: var(--x);
+    top: var(--y);
+
+    background: var(--c);
+    opacity: var(--figuras-op);
+
+    animation: flotar var(--d) ease-in-out infinite alternate;
+}
+
+.figuras span:nth-child(1) { --t: 140px; --x: 6%;  --y: 14%; --c: var(--azul);     --d: 7s; border-radius: 50%; }
+.figuras span:nth-child(2) { --t: 90px;  --x: 82%; --y: 10%; --c: var(--turquesa); --d: 5s; border-radius: 12px; }
+.figuras span:nth-child(3) { --t: 200px; --x: 72%; --y: 58%; --c: var(--indigo);   --d: 9s; border-radius: 50%; }
+.figuras span:nth-child(4) { --t: 70px;  --x: 14%; --y: 72%; --c: var(--turquesa); --d: 6s; border-radius: 12px; }
+.figuras span:nth-child(5) { --t: 110px; --x: 46%; --y: 84%; --c: var(--azul);     --d: 8s; border-radius: 50%; }
+.figuras span:nth-child(6) { --t: 60px;  --x: 56%; --y: 22%; --c: var(--indigo);   --d: 4s; border-radius: 12px; }
+
+/* sube 60px, gira 90° y crece un poco; "alternate" hace que luego vuelva */
+@keyframes flotar {
+    from { transform: translateY(0) rotate(0deg) scale(1); }
+    to   { transform: translateY(-60px) rotate(90deg) scale(1.25); }
+}
+
+
+/* ==========================================================
+   NAVBAR
+   Efecto: al pasar el mouse sobre un link, aparece una raya
+   de color que crece desde 0 hasta el ancho completo.
+   ========================================================== */
+
+.navbar {
+    position: fixed;
+    top: 5px;
+    left: 0;
+    width: 100%;
+
+    z-index: 100;
+
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+
+    border-bottom: 1px solid var(--border);
+
+    transition: background-color 0.5s ease, border-color 0.5s ease;
+}
+
+.navbar-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    padding: 14px 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.navbar-logo {
+    color: var(--text);
+    text-decoration: none;
+
+    font-weight: 800;
+    font-size: 17px;
+
+    transition: transform 0.4s var(--rebote), color 0.3s ease;
+}
+
+.navbar-logo:hover {
+    color: var(--azul);
+    transform: rotate(-6deg) scale(1.15);
+}
+
+.navbar-links {
+    list-style: none;
+
+    display: flex;
+    gap: 26px;
+}
+
+.navbar-links a {
+    position: relative;
+
+    color: var(--text-muted);
+    text-decoration: none;
+
+    font-size: 14px;
+
+    padding-bottom: 4px;
+
+    transition: color 0.3s ease, transform 0.3s var(--rebote);
+}
+
+/* la raya de color: empieza con ancho 0 (scaleX(0)) y crece al hacer hover */
+.navbar-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+
+    background: var(--c, var(--azul));
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.4s var(--rebote);
+}
+
+/* los links se turnan los 3 colores: azul, turquesa, índigo */
+.navbar-links li:nth-child(3n + 1) a { --c: var(--azul); }
+.navbar-links li:nth-child(3n + 2) a { --c: var(--turquesa); }
+.navbar-links li:nth-child(3n + 3) a { --c: var(--indigo); }
+
+.navbar-links a:hover,
+.navbar-links a:focus-visible {
+    color: var(--text);
+    transform: translateY(-3px);
+}
+
+.navbar-links a:hover::after,
+.navbar-links a:focus-visible::after {
+    transform: scaleX(1);
+}
+
+
+/* ==========================================================
+   INTERRUPTOR CLARO / OSCURO
+   Un botón con forma de interruptor. El "pomo" (círculo de color)
+   se desliza con transform: translateX() y la curva de rebote.
+   Su posición depende del tema que tenga <html>.
+   ========================================================== */
+
+.tema-switch {
+    position: relative;
+    flex-shrink: 0;
+
+    width: 56px;
+    height: 30px;
+
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+
+    cursor: pointer;
+
+    transition: transform 0.4s var(--rebote), background-color 0.5s ease, border-color 0.5s ease;
+}
+
+.tema-switch:hover {
+    transform: rotate(-5deg) scale(1.12);
+}
+
+.tema-switch:focus-visible {
+    outline: 2px solid var(--azul);
+    outline-offset: 3px;
+}
+
+/* el pomo: por defecto a la izquierda (sol, tema claro) */
+.pomo {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    z-index: 1;
+
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+
+    background: var(--azul);
+
+    transition: transform 0.5s var(--rebote), background-color 0.5s ease;
+}
+
+/* en tema oscuro el pomo se desliza 24px a la derecha (luna) */
+html[data-tema="oscuro"] .pomo {
+    transform: translateX(24px);
+}
+
+/* los dos dibujitos van encima del pomo */
+.tema-switch svg {
+    position: absolute;
+    top: 50%;
+    margin-top: -7px;
+    z-index: 2;
+
+    color: var(--text-muted);
+
+    transition: color 0.4s ease;
+}
+
+.icono-sol  { left: 8px; }
+.icono-luna { right: 8px; }
+
+/* el dibujo del tema activo se ve sobre el pomo */
+html[data-tema="claro"] .icono-sol,
+html[data-tema="oscuro"] .icono-luna {
+    color: var(--on-c);
+}
+
+/* En pantallas pequeñas: sin logo, y los links se deslizan de lado
+   (overflow-x: auto) para que el interruptor siempre quede visible */
+@media (max-width: 700px) {
+    .navbar-inner { padding: 12px 4%; gap: 10px; }
+    .navbar-logo { display: none; }
+
+    .navbar-links {
+        flex: 1;
+        min-width: 0;
+        gap: 16px;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+
+    .navbar-links::-webkit-scrollbar { display: none; }
+
+    .navbar-links li { flex-shrink: 0; }
+    .navbar-links a { font-size: 12.5px; }
+}
+
+
+/*
+   BIENVENIDA (hero)
+   El efecto de scroll (se desvanece y crece) lo hace script.js.
+   Aqui solo agregamos: entrada con rebote y nombre con degradado.
+*/
+
+.welcome {
+    height: 200vh;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-content {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+
+    text-align: center;
+    pointer-events: none;
+}
+
+.welcome-text {
+    font-size: 18px;
+    letter-spacing: 6px;
+    color: var(--azul);
+    font-weight: 600;
+
+    /* "backwards" = usa el primer paso de la animacion mientras espera.
+       No usamos "forwards" para no pelear con el efecto de scroll del JS. */
+    animation: aparecer 1s var(--rebote) backwards;
+}
+
+#welcome-name {
+    margin-top: 20px;
+
+    font-size: clamp(44px, 9vw, 84px);
+    font-weight: 800;
+
+    transform-origin: center;
+    will-change: transform, opacity;
+
+    /* TEXTO CON DEGRADADO: un degradado azul-turquesa detrás de las letras,
+       recortado con la forma del texto, y moviéndose sin parar */
+    background: linear-gradient(90deg, var(--azul), var(--turquesa), var(--indigo), var(--azul));
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    animation: mover-colores 6s linear infinite;
+}
+
+.welcome-description {
+    margin-top: 15px;
+
+    font-size: 18px;
+    color: var(--text-muted);
+
+    animation: aparecer 1s 0.4s var(--rebote) backwards;
+}
+
+/* ENTRADA: parte pequeño, torcido y transparente; termina normal */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(60px) scale(0.5) rotate(-8deg);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* LOADER: un aro que gira (rotate de 0 a 360 grados) */
+.loader {
+    width: 44px;
+    height: 44px;
+
+    margin: 40px auto 0;
+
+    border: 4px solid var(--loader-pista);
+    border-top: 4px solid var(--azul);
+
+    border-radius: 50%;
+
+    animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+
+/* ==========================================================
+   ANIMACION AL APARECER (scroll reveal)
+   1) Al inicio todo lo que tiene data-anim esta invisible.
+   2) Cuando entra a la pantalla, script.js le agrega la clase "in".
+   3) Con "in" se reproduce una animacion de entrada distinta
+      segun el valor: left, right, up o zoom.
+   4) animation-delay usa --i para que entren uno tras otro.
+   ========================================================== */
+
+[data-anim] {
+    opacity: 0;
+}
+
+[data-anim].in {
+    opacity: 1;
+    animation-duration: 1s;
+    animation-timing-function: var(--rebote);
+    animation-fill-mode: backwards;
+    animation-delay: calc(var(--i, 0) * 0.18s);
+}
+
+[data-anim="left"].in  { animation-name: entra-izquierda; }
+[data-anim="right"].in { animation-name: entra-derecha; }
+[data-anim="up"].in    { animation-name: entra-abajo; }
+[data-anim="zoom"].in  { animation-name: entra-zoom; }
+
+@keyframes entra-izquierda {
+    from { opacity: 0; transform: translateX(-140px) rotate(-6deg); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes entra-derecha {
+    from { opacity: 0; transform: translateX(140px) rotate(6deg); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes entra-abajo {
+    from { opacity: 0; transform: translateY(120px) rotate(3deg); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes entra-zoom {
+    from { opacity: 0; transform: scale(0.2) rotate(-12deg); }
+    to   { opacity: 1; transform: none; }
+}
+
+
+/* ==========================================================
+   BASE DE LAS SECCIONES
+   Cada seccion define su propio color en la variable --c
+   (y --c-rgb, el mismo color en números, para hacerlo
+   transparente). Todo lo de adentro usa var(--c): con dos
+   lineas se cambia el color de toda la seccion.
+   ========================================================== */
+
+main {
+    position: relative;
+    z-index: 1;
+}
+
+.section {
+    position: relative;
+    padding: 120px 6%;
+    border-top: 1px solid var(--border);
+
+    /* una luz suave de color en la esquina */
+    background: radial-gradient(circle at 95% 0%, rgba(var(--c-rgb), 0.14), transparent 55%);
+}
+
+#sobre-mi     { --c: var(--indigo);   --c-rgb: var(--indigo-rgb); }
+#habilidades  { --c: var(--azul);     --c-rgb: var(--azul-rgb); }
+#proyectos    { --c: var(--turquesa); --c-rgb: var(--turquesa-rgb); }
+#educacion    { --c: var(--indigo);   --c-rgb: var(--indigo-rgb); }
+#contacto     { --c: var(--turquesa); --c-rgb: var(--turquesa-rgb); }
+
+.section-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ".section .section-label" (más específico que ".section p") para que
+   el color del texto no lo pise el gris de los párrafos */
+.section .section-label {
+    display: inline-block;
+
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: var(--on-c);
+    background: var(--c);
+
+    padding: 5px 14px;
+    border-radius: 999px;
+
+    margin-bottom: 16px;
+}
+
+.section h2 {
+    position: relative;
+
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    line-height: 1.2;
+
+    max-width: 20ch;
+
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+}
+
+/* la raya de color bajo el titulo: se estira cuando el titulo aparece */
+.section h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 90px;
+    height: 6px;
+    border-radius: 3px;
+
+    background: var(--c);
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.8s 0.5s var(--rebote);
+}
+
+.section h2.in::after {
+    transform: scaleX(1);
+}
+
+.section p {
+    color: var(--text-muted);
+    line-height: 1.7;
+
+    max-width: 65ch;
+}
+
+
+/* ==========================================================
+   SOBRE Mi
+   La foto tiene un aro de colores que gira sin parar.
+   Al pasar el mouse, da una vuelta completa y crece.
+   ========================================================== */
+
+.about-grid {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+}
+
+/* La foto se arma con 3 capas apiladas (isolation: isolate las mantiene juntas):
+   ::before = aro de colores que gira (abajo)
+   ::after  = círculo de fondo (en medio)
+   <span>   = las iniciales (arriba) */
+.about-photo {
+    position: relative;
+    isolation: isolate;
+    flex-shrink: 0;
+
+    width: 150px;
+    height: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 44px;
+    font-weight: 800;
+
+    transition: transform 0.9s var(--rebote);
+}
+
+.about-photo::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    z-index: 0;
+
+    border-radius: 50%;
+    background: conic-gradient(var(--azul), var(--turquesa), var(--indigo), var(--azul));
+
+    animation: girar 4s linear infinite;
+}
+
+.about-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    border-radius: 50%;
+    background: var(--bg-alt);
+
+    transition: background-color 0.5s ease;
+}
+
+.about-photo span {
+    position: relative;
+    z-index: 2;
+}
+
+.about-photo:hover {
+    transform: rotate(360deg) scale(1.2);
+}
+
+@media (max-width: 640px) {
+    .about-grid {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 36px;
+    }
+}
+
+
+/* ==========================================================
+   HABILIDADES
+   Cada etiqueta rebota arriba y abajo para siempre.
+   animation-delay (usando --i) hace que no rebote todas a la vez.
+   Con el mouse encima: deja de rebotar, se inclina y se pinta.
+   ========================================================== */
+
+.skills-list {
+    list-style: none;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    margin-top: 10px;
+}
+
+.skills-list li:nth-child(3n + 1) { --c: var(--azul); }
+.skills-list li:nth-child(3n + 2) { --c: var(--turquesa); }
+.skills-list li:nth-child(3n + 3) { --c: var(--indigo); }
+
+.skills-list li {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 700;
+
+    padding: 14px 24px;
+
+    border: 3px solid var(--c);
+    border-radius: 14px;
+
+    background: var(--bg-alt);
+    color: var(--text);
+
+    cursor: default;
+
+    animation: rebotar 1.4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.2s);
+
+    transition: transform 0.3s var(--rebote), background-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes rebotar {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-16px); }
+}
+
+.skills-list li:hover {
+    animation: none;
+    transform: translateY(-12px) rotate(-8deg) scale(1.25);
+    background: var(--c);
+    color: var(--on-c);
+}
+
+
+/* ==========================================================
+   PROYECTOS
+   Cada tarjeta tiene su color (--c). Al pasar el mouse:
+   se levanta, se inclina y aparece una sombra de color.
+   El número gira una vuelta completa.
+   ========================================================== */
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+
+    margin-top: 36px;
+}
+
+@media (max-width: 800px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.project-card:nth-child(1) { --c: var(--azul);     --c-rgb: var(--azul-rgb); }
+.project-card:nth-child(2) { --c: var(--indigo);   --c-rgb: var(--indigo-rgb); }
+.project-card:nth-child(3) { --c: var(--turquesa); --c-rgb: var(--turquesa-rgb); }
+
+.project-card {
+    border: 3px solid var(--c);
+    border-radius: 18px;
+
+    padding: 26px;
+
+    background: var(--bg-alt);
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    transition: transform 0.45s var(--rebote), box-shadow 0.3s ease, background-color 0.5s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-18px) rotate(-3deg) scale(1.05);
+    box-shadow: 0 28px 44px -14px rgba(var(--c-rgb), 0.55);
+}
+
+.project-number {
+    display: inline-block;
+    align-self: flex-start;
+
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--c);
+
+    transition: transform 0.8s var(--rebote);
+}
+
+.project-card:hover .project-number {
+    transform: rotate(360deg) scale(1.4);
+}
+
+.project-card h3 {
+    font-size: 19px;
+}
+
+.project-card p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.project-tags span {
+    font-family: var(--font-mono);
+    font-size: 12px;
+
+    padding: 4px 10px;
+
+    border: 2px solid var(--c);
+    border-radius: 999px;
+
+    color: var(--text);
+}
+
+.project-link {
+    margin-top: auto;
+    padding-top: 10px;
+
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--c);
+    text-decoration: none;
+}
+
+/* la flecha aparece con ::after y se desliza a la derecha */
+.project-link::after {
+    content: " →";
+    display: inline-block;
+    transition: transform 0.3s var(--rebote);
+}
+
+.project-link:hover::after,
+.project-link:focus-visible::after {
+    transform: translateX(10px);
+}
+
+
+/* ==========================================================
+   EDUCACION
+   Una linea vertical de color crece de arriba a abajo
+   y el punto de la linea late (pulso).
+   ========================================================== */
+
+.timeline {
+    list-style: none;
+    position: relative;
+
+    margin-top: 28px;
+    padding-left: 34px;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+    border-radius: 2px;
+
+    background: var(--c);
+
+    animation: crecer-linea 1.4s 0.6s ease-out backwards;
+    transform-origin: top;
+}
+
+@keyframes crecer-linea {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+}
+
+.timeline li {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    padding: 12px 0 20px;
+}
+
+.timeline li::before {
+    content: "";
+    position: absolute;
+    left: -36px;
+    top: 16px;
+
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+
+    background: var(--c);
+
+    animation: latir 1.6s ease-in-out infinite;
+}
+
+/* el punto crece y baja de tamaño sin parar, como un corazon */
+@keyframes latir {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.6); }
+}
+
+.timeline-date {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c);
+}
+
+.timeline-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.timeline-detail {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   CONTACTO
+   Los links son botones grandes que se deslizan a la derecha
+   al pasar el mouse y se pintan de color.
+   El correo tiene un "pulso": un aro que se expande y desaparece.
+   ========================================================== */
+
+.contact-list {
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    margin-top: 28px;
+    max-width: 420px;
+}
+
+.contact-list a {
+    display: block;
+
+    padding: 16px 24px;
+
+    color: var(--text);
+    text-decoration: none;
+
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+
+    border: 3px solid var(--c);
+    border-radius: 14px;
+
+    transition: transform 0.4s var(--rebote), background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-list a:hover,
+.contact-list a:focus-visible {
+    transform: translateX(22px) rotate(-1.5deg);
+    background: var(--c);
+    color: var(--on-c);
+}
+
+.pulso {
+    animation: pulso 2s ease-out infinite;
+}
+
+/* box-shadow: de un aro pegado al botón a un aro grande y transparente */
+@keyframes pulso {
+    0%   { box-shadow: 0 0 0 0 rgba(var(--c-rgb), 0.6); }
+    100% { box-shadow: 0 0 0 26px rgba(var(--c-rgb), 0); }
+}
+
+
+/* ==========================================================
+   FOOTER
+   La linea de arriba cambia de color moviendo el degradado.
+   ========================================================== */
+
+.footer {
+    position: relative;
+    z-index: 1;
+
+    padding: 36px 6%;
+
+    text-align: center;
+
+    background: var(--bg);
+
+    transition: background-color 0.5s ease;
+}
+
+.footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+
+    background: linear-gradient(90deg, var(--azul), var(--turquesa), var(--indigo), var(--azul));
+    background-size: 300% 100%;
+
+    animation: mover-colores 5s linear infinite;
+}
+
+.footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   ACCESIBILIDAD
+   Si la persona pidio "reducir movimiento" en su sistema,
+   apagamos las animaciones y mostramos todo directamente.
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition-duration: 0.01s !important;
+    }
+
+    [data-anim] {
+        opacity: 1;
+    }
+
+    .section h2::after {
+        transform: scaleX(1);
+    }
+}
